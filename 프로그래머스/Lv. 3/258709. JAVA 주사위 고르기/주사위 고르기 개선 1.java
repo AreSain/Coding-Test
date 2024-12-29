@@ -1,5 +1,6 @@
 import static java.util.Arrays.*;
 import java.util.Arrays;
+
 class Solution {
 	public static int[] goat, playerA;
 	public static int maxWin = 0, n, diceIndex = 0;
@@ -53,13 +54,8 @@ class Solution {
 		sort(playerBDiceResult);
 
 		int win = 0;
-		int playerBIndex = 0;
-
 		for (int i = 0; i < playerADiceResult.length; i++) {
-			while (playerBIndex < playerBDiceResult.length && 
-				playerBDiceResult[playerBIndex] < playerADiceResult[i]) {
-				playerBIndex++;
-			}
+			int playerBIndex = findBIndex(playerBDiceResult, playerADiceResult[i]);
 			win += playerBIndex;
 		}
 
@@ -80,5 +76,18 @@ class Solution {
 		for (int i = 0; i < 6; i++) {
 			rollAllDice(dice, player, turn + 1, currentSum + dice[player[turn]][i], results);
 		}
+	}
+
+	public static int findBIndex(int[] playerBDiceResult, int AResult) {
+		int left = 0, right = (int)Math.pow(6, n / 2);
+		while (left < right) {
+			int mid = (left + right) / 2;
+			if (AResult > playerBDiceResult[mid]) {
+				left = mid + 1;
+			} else {
+				right = mid;
+			}
+		}
+		return left;
 	}
 }
